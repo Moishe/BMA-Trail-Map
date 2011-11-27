@@ -1,0 +1,902 @@
+[
+  {
+    "trail": {
+      "areaId": 1, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 1, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Canyon%20Loop.kmz", 
+      "name": "Betasso Preserve", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/canyon-loop"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 1, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 2, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Benjamin%20Loop.kml", 
+      "name": "Betasso Preserve", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/benjamin-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 1, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 3, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Link%20Trail.kmz", 
+      "name": "Betasso Preserve", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/betasso-link-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 2, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 4, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Foothills%20Trail.kmz", 
+      "name": "Boulder Valley Ranch / Boulder Reservoir", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/foothills-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 2, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 5, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Eagle%20Trail.kmz", 
+      "name": "Boulder Valley Ranch / Boulder Reservoir", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/eagle-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 2, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 6, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/North%20Rim%20Trail.kmz", 
+      "name": "Boulder Valley Ranch / Boulder Reservoir", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/north-rim-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 2, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 7, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Left%20Hand%20Trail.kmz", 
+      "name": "Boulder Valley Ranch / Boulder Reservoir", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/left-hand-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 2, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 8, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Sage%20Trail.kmz", 
+      "name": "Boulder Valley Ranch / Boulder Reservoir", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/sage-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 3, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 15, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Blue%20Dot.kmz", 
+      "name": "Dot Trails", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/blue-dot-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 3, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 16, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Boot.kmz", 
+      "name": "Dot Trails", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/boot-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 3, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 18, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Reboot.kmz", 
+      "name": "Dot Trails", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/reboot-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 3, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 19, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Red%20Dot.kmz", 
+      "name": "Dot Trails", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/red-dotyellow-dot-loop"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 20, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Prarie%20Vista_0.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/prairie-vista-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 21, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Springbrook%20North.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/spring-brook-north-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 22, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Community%20Ditch%20%28West%29.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/community-ditch-west"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 23, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Doudy%20Draw.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/doudy-draw-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 24, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Flatirons%20Vista%20South.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/flatirons-vista-south-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 25, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Flatirons%20Vista%20North.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/flatirons-vista-north-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 4, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 26, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Springbrook%20South_0.kmz", 
+      "name": "Doudy Draw", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/spring-brook-south-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 7, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 34, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Upper%20Bitterbrush.kmz", 
+      "name": "Hall Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/upper-bitterbrush-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 7, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 35, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Nelson%20Loop.kmz", 
+      "name": "Hall Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/nelson-loop"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 7, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 36, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Antelope.kmz", 
+      "name": "Hall Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/antelope-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 7, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 37, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Lower%20Bitterbrush.kmz", 
+      "name": "Hall Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/lower-bitterbrush-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 8, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 38, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Picture%20Rock.kmz", 
+      "name": "Heil Valley Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/picture-rock-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 8, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 39, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Ponderosa%20Loop.kmz", 
+      "name": "Heil Valley Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/ponderosa-loop"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 8, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 40, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Wapiti.kmz", 
+      "name": "Heil Valley Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/wapiti-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 8, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 41, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Wild%20Turkey.kmz", 
+      "name": "Heil Valley Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/wild-turkey-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 9, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 44, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Sourdough%20Trail%20%28North%29.kmz", 
+      "name": "High Country", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/sourdough-trail-north"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 9, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 50, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Sourdough%20Trail%20%28South%29.kmz", 
+      "name": "High Country", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/sourdough-trail-south"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 52, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Coalton%20Trail.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/coalton-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 53, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Coal%20Seam.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/coal-seam-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 54, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Cowdrey%20Draw.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/cowdrey-draw-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 55, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Mayhoffer-Singletree%20Trail.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/mayhoffer-singletree-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 56, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Greenbelt%20Plateau.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/greenbelt-plateau-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 57, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/High%20Plains.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/high-plains-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 58, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Community%20Ditch%20%28East%29.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/community-ditch-east"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 59, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Meadowlark.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/meadowlark-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 10, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 60, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Marshal%20Valley.kmz", 
+      "name": "Marshall Mesa", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/marshall-valley-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 11, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 64, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Ceran%20St.%20Vrain%20-%20Miller%20Rock.kmz", 
+      "name": "Middle Country", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/ceran-st-vrain-trail-miller-rock"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 13, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 68, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Eagle%20Wind%20Loop.kmz", 
+      "name": "Rabbit Mountain", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/eagle-wind-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 15, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 74, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Walker%20Ranch%20Link.kmz", 
+      "name": "Walker Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/walker-connector"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 15, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 75, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Walker%20Ranch.kmz", 
+      "name": "Walker Ranch", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/walker-ranch-loop"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 76, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Re-Root.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/re-root-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 77, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/School%20Bus.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/school-bus-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 78, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Sugar%20Mag.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/sugar-mag-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 79, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Aspen%20Alley.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/aspen-alley-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 81, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Hobbit%20Trail.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/hobbit-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 82, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Lookout%20Trail.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/lookout-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 83, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Lookout%20Trail_0.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/observatory-trail"
+    }
+  }, 
+  {
+    "trail": {
+      "areaId": 16, 
+      "description": "Lorem ipsum", 
+      "head": {
+        "lat": 0, 
+        "lon": 0
+      }, 
+      "id": 84, 
+      "keywords": "lorem ipsum", 
+      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Pungey%20Stick%20%20Whoop-Di-Doo%27s.kmz", 
+      "name": "West Magnolia", 
+      "owner": "Lorem ipsum", 
+      "regionId": 1, 
+      "updatedAt": 0, 
+      "url": "http://bouldermountainbike.org/trail/pungy-stick-trail"
+    }
+  }
+]
