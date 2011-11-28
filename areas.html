@@ -21,21 +21,16 @@
     height: 100%;
   }
 </style>
+<script type="text/javascript" src="/static/jquery-1.7.1.min.js"></script>
 <script type="text/javascript">
   function initialize() {
   }
 
-  areas = [];
   function selectArea(id) {
-    if (document.getElementById(id).checked) {
-      areas.push(id);
-    } else {
-      for (i = 0; i < areas.length; i++) {
-        if (areas[i] == id) {
-          areas.splice(i, i + 1);
-        }
-      }
-    }
+    areas = [];
+    $(":checked").each(function() {
+      areas.push(this.id);
+    });
     url = "/map?a=" + areas.join(",");
     document.getElementById('map').src = url;
   }
@@ -48,9 +43,7 @@
         <td width="200px">
           <div class="choices" id="choices">
             {% for area in areas %}
-            <div class="input">
-              <input id="{{ area.id }}" type="checkbox" onclick="selectArea({{ area.id }});">{{ area.description }}</input>
-            </div>
+            <input id="{{ area.id }}" type="checkbox" onclick="selectArea({{ area.id }});">{{ area.description }}</input><br/>
             {% endfor %}
           </div>
         </td>

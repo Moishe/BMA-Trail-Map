@@ -11,11 +11,11 @@ handlers:
 - url: /v1/.*
   script: mockapi.app
 
-- url: /.*
+- url: /
   script: trails.app
 
-inbound_services:
-- channel_presence
+- url: /map
+  script: mappage.app
 
 builtins:
 - datastore_admin: on

@@ -27,7 +27,7 @@
       }, 
       "id": 2, 
       "keywords": "lorem ipsum", 
-      "kmlurl": "http://bouldermountainbike.org/sites/default/files/Benjamin%20Loop.kml", 
+      "kmlurl": "/static/bl.kml",
       "name": "Betasso Preserve", 
       "owner": "Lorem ipsum", 
       "regionId": 1, 

@@ -1,34 +1,109 @@
 #!/usr/bin/python
 
+import copy
+import logging
 import os
 
 import webapp2
 from django.utils import simplejson as json
 
-SAMPLE_TRAIL_1 = {u'meta': {u'code': 200}, u'response': {u'trail': {u'areaId': u'4de9684ea5486462740f95c4', u'description': '', u'url': u'http://bouldermountainbike.org/trail/coal-seam-trail', u'regionId': u'4de6d929a8a32cc7f387f52b', u'head': {u'lat': 39.952602, u'lon': -105.231247}, u'owner': u'City of Boulder Open Space & Mountain Parks', u'kmlurl': u'http://bouldermountainbike.org/sites/default/files/Benjamin%20Loop.kml', u'updatedAt': 1307551432975.0, u'keywords': u'South', u'id': u'4de9689c457c5678aa351a6b', u'name': u'Coal Seam'}}}
-
-SAMPLE_TRAIL_2 = {u'meta': {u'code': 200}, u'response': {u'trail': {u'areaId': u'4de9684ea5486462740f95c4', u'description': '', u'url': u'http://bouldermountainbike.org/trail/coal-seam-trail', u'regionId': u'4de6d929a8a32cc7f387f52b', u'head': {u'lat': 39.952602, u'lon': -105.231247}, u'owner': u'City of Boulder Open Space & Mountain Parks', u'kmlurl': u'http://bouldermountainbike.org/sites/default/files/Canyon%20Loop.kmz', u'updatedAt': 1307551432975.0, u'keywords': u'South', u'id': u'4de9689c457c5678aa351a6b', u'name': u'Coal Seam'}}}
-
-REGION_RESPONSE = {u'meta': {u'code': 200}, u'response': {u'regions': [{u'name': u'Boulder, CO', u'updatedAt': 1317752573419.0, u'sponsorName': u'Boulder Mountainbike Alliance', u'sponsorTwitter': [u'#boco_trails', u'#valmontbikepark', u'boulderbma'], u'sponsorId': u'4def87fa7dcabb18dd36f524', u'allowed': [u'all'], u'sponsorAlertsUrl': u'http://bma.geozen.com/alerts/2011/index.html', u'id': u'4de6d929a8a32cc7f387f52b'}]}}
+REGION_RESPONSE = {
+  "meta": {
+    "code": 200
+    },
+  "response": {
+    "regions": [
+      {
+        "allowed": [
+          "all"
+          ],
+        "id": "1",
+        "name": "Boulder, CO",
+        "sponsorAlertsUrl": "http://bma.geozen.com/alerts/2011/index.html",
+        "sponsorId": "4def87fa7dcabb18dd36f524",
+        "sponsorName": "Boulder Mountainbike Alliance",
+        "sponsorTwitter": [
+          "#boco_trails",
+          "#valmontbikepark",
+          "boulderbma"
+          ],
+        "updatedAt": 1317752573419.0
+        }
+      ]
+    }
+  }
 
 
 class RegionsPage(webapp2.RequestHandler):
   def post(self):
     self.response.out.write(json.dumps(REGION_RESPONSE))
 
+def ResponseFromTrails(trails):
+    response = {
+      'meta': {'code': 200},
+      'response': {'trails': []}
+      }
+
+    for trail in trails:
+      trail_response = {
+        'meta': {'code': 200},
+        'response': trail
+        }
+      response['response']['trails'].append(trail_response)
+
+    return response
+
+
+def ResponseFromAreas(areas):
+  response = {
+    'meta': {'code': 200},
+    'response': {'areas': areas}
+    }
+
+  return response
+
+
+def ReadTrailsFromFile():
+  path = os.path.join(os.path.dirname(__file__), 'trails')
+  return json.loads(open(path).read())
+
+
+def ReadAreasFromFile():
+  path = os.path.join(os.path.dirname(__file__), 'areas')
+  return json.loads(open(path).read())
+
+
+class TrailsByAreaPage(webapp2.RequestHandler):
+  def get(self, area_id):
+    return self.post(area_id)
+
+  def post(self, area_id):
+    trails = ReadTrailsFromFile()
+    filtered_trails = filter(lambda x: str(x['trail']['areaId']) == area_id, trails)
+    self.response.out.write(json.dumps(ResponseFromTrails(filtered_trails)))
+
 class TrailsByRegionPage(webapp2.RequestHandler):
+  def get(self, region_id):
+    return self.post(region_id)
+
   def post(self, region_id):
-    response = {'meta': 
-                {'code': 200},
-                'response': 
-                 {'trails': [SAMPLE_TRAIL_1, SAMPLE_TRAIL_2]}
-               }
-    self.response.out.write(json.dumps(response))
+    trails = ReadTrailsFromFile()
+    self.response.out.write(json.dumps(ResponseFromTrails(trails)))
 
 class TrailsPage(webapp2.RequestHandler):
   def post(self, trail_id):
     self.response.out.write(json.dumps(SAMPLE_TRAIL_1))
 
+class AreasByRegionPage(webapp2.RequestHandler):
+  def get(self, region_id):
+    return self.post(region_id)
+
+  def post(self, region_id):
+    areas = ReadAreasFromFile()
+    self.response.out.write(json.dumps(ResponseFromAreas(areas)))
+
 app = webapp2.WSGIApplication([('/v1/trails/([^/]+)$', TrailsPage),
+                               ('/v1/area/([^/]+)/trails$', TrailsByAreaPage),
                                ('/v1/regions$', RegionsPage),
+                               ('/v1/regions/([^/]+)/areas$', AreasByRegionPage),
                                ('/v1/regions/([^/]+)/trails$', TrailsByRegionPage)], debug=True)
