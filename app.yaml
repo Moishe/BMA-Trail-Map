@@ -12,9 +12,6 @@ handlers:
   script: mockapi.app
 
 - url: /
-  script: trails.app
-
-- url: /map
   script: mappage.app
 
 builtins:

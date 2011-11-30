@@ -1,70 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<style type="text/css">
-  html { height: 100% }
-  body { height: 100%; margin: 0; padding: 0 }
-  #map_canvas { height: 100% }
-</style>
-<script type="text/javascript"
+  <script type="text/javascript" src="/static/jquery-1.7.1.min.js"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    html { height: 100% }
+    body { height: 100%; margin: 0; padding: 0 }
+    #map_canvas { height: 100% }
+    table {
+      width: 100%;
+      height: 100%;
+    }
+
+    td {
+      height: 100%;
+    }
+  </style>
+  <script type="text/javascript"
     src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCY7q5a-tgPPvLAYPaaxdOeomitd8N7fJk&sensor=true">
-</script>
-<script type="application/json" id="trails">
-{{ trails|safe }}
-</script>
-<script type="text/javascript">
+  </script>
+  <script type="application/json" id="trails-json">
+    {{ trails|safe }}
+  </script>
+  <script type="application/json" id="areas-json">
+    {{ areas_json|safe }}
+  </script>
+  <script type="text/javascript">
+  var kmlByArea = [];
+  var selectedKmls = [];
+  var map;
+
   function initialize() {
     var latlng = new google.maps.LatLng(40.0, -105.26);
     var myOptions = {
-      zoom: 8,
+      zoom: 11,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
+    map = new google.maps.Map(document.getElementById("map_canvas"),
+                              myOptions);
 
-    var trailsByAreaJson = document.getElementById('trails').innerHTML;
+    var trailsByAreaJson = document.getElementById('trails-json').innerHTML;
     var trailsByArea = JSON.parse(trailsByAreaJson);
 
-    var kmls = [];
     for (i = 0; i < trailsByArea.length; i++) {
+      kmlByArea[i] = [];
       trails = trailsByArea[i].response.trails;
       for (j = 0; j < trails.length; j++) {
         var kmlurl = trails[j].response.trail.kmlurl;
-        var kml = new google.maps.KmlLayer(kmlurl);
-        kml.setMap(map);
+        var kml = new google.maps.KmlLayer(kmlurl, {'preserveViewport': true});
         kml.click = function() {
           alert(JSON.stringify(kml.getMetadata()));
         }
-        kmls.push(kml);
+        kmlByArea[i].push(kml);
+      }
+      if (kmlByArea[i].length == 0) {
+        $('#choice-' + (i + 1)).css('display', 'none');
       }
     }
-
-    hasSetBounds = false;
-    google.maps.event.addListener(map, 'idle', function() {
-      if (!hasSetBounds) {
-        if (kmls.length == 0) {
-          document.getElementById('map_canvas').style.visibility = 'visible';
-        } else {
-          bounds = kmls[0].getDefaultViewport();
-          for (i = 1; i < kmls.length; i++) {
-            kmlViewport = kmls[i].getDefaultViewport();
-            if (kmlViewport) {
-              bounds.union(kmlViewport);
-            }
-          }
-          map.fitBounds(bounds);
-        }
-      } else {
-        document.getElementById('map_canvas').style.visibility = 'visible';
-      }
-      hasSetBounds = true;
-    });
   }
-</script>
-</head>
-<body onload="initialize()">
-  <div id="map_canvas" style="visibility: hidden; width:100%; height:100%"></div>
-</body>
+
+  function setBounds() {
+    setTimeout(function() {
+      if (selectedKmls.length > 0) {
+        bounds = selectedKmls[0].getDefaultViewport();
+        for (i = 1; i < selectedKmls.length; i++) {
+          kmlViewport = selectedKmls[i].getDefaultViewport();
+          if (kmlViewport) {
+            bounds.union(kmlViewport);
+          }
+        }
+        map.fitBounds(bounds);
+      }
+    }, 500);
+  }
+
+  function selectArea(id) {
+    var oldSelectedKmls = selectedKmls;
+    var total = 0;
+    selectedKmls = [];
+    $(":checked").each(function() {
+      total = total + 1;
+      id = this.id - 1;
+      for (i = 0; i < kmlByArea[id].length; i++) {
+        selectedKmls.push(kmlByArea[id][i]);
+        oldIdx = oldSelectedKmls.indexOf(kmlByArea[id][i]);
+        if (oldIdx != -1) {
+          oldSelectedKmls.splice(oldIdx, 1);
+        }
+        kmlByArea[id][i].setMap(map);
+      }
+    });
+
+    for (i = 0; i < oldSelectedKmls.length; i++) {
+      oldSelectedKmls[i].setMap(null);
+    }
+
+    if (total >= 3) {
+      $(":input:not(:checked)").each(function() {
+        $(this).attr('disabled', 'true');
+      });
+    } else {
+      $(":input:not(:checked)").each(function() {
+        $(this).removeAttr('disabled');
+      });
+    }
+
+    setBounds();
+  }
+  </script>
+  </head>
+  <body onload="initialize()">
+    <table>
+      <tbody>
+        <tr>
+          <td width="200px">
+            <div class="choices" id="choices">
+              {% for area in areas %}
+                <div class="choice" id="choice-{{ area.id }}">
+                  <input id="{{ area.id }}" type="checkbox" onclick="selectArea({{ area.id }});"/>
+                  <span id="desc-{{ area.id }}">{{ area.description }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          </td>
+          <td>
+            <div id="map_canvas" style="width:100%; height:100%"></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>
