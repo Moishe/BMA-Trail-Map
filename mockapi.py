@@ -1,11 +1,16 @@
 #!/usr/bin/python
 
+import buildpoints
 import copy
 import logging
 import os
-
 import webapp2
+
+from xml.dom.minidom import parseString
 from django.utils import simplejson as json
+
+from google.appengine.api import memcache
+from google.appengine.api import urlfetch
 
 REGION_RESPONSE = {
   "meta": {
@@ -34,7 +39,13 @@ REGION_RESPONSE = {
   }
 
 
+BMA_DOMAIN = 'http://bouldermountainbike.org'
+
+
 class RegionsPage(webapp2.RequestHandler):
+  def get(self):
+    return self.post()
+
   def post(self):
     self.response.out.write(json.dumps(REGION_RESPONSE))
 
@@ -73,37 +84,88 @@ def ReadAreasFromFile():
   return json.loads(open(path).read())
 
 
-class TrailsByAreaPage(webapp2.RequestHandler):
-  def get(self, area_id):
-    return self.post(area_id)
+class JSONPHandler(webapp2.RequestHandler):
+  def get(self, id):
+    return self.post(id)
 
-  def post(self, area_id):
-    trails = ReadTrailsFromFile()
-    filtered_trails = filter(lambda x: str(x['trail']['areaId']) == area_id, trails)
-    self.response.out.write(json.dumps(ResponseFromTrails(filtered_trails)))
+  def post(self, id):
+    json_str = self.get_json(id)
+    jsonp = self.request.get('jsonp')
+    if jsonp:
+      self.response.headers['Content-Type'] = 'application/javascript'
+      self.response.out.write('%s(%s);'% (jsonp, json_str))
+    else:
+      self.response.out.write(json_str)
 
-class TrailsByRegionPage(webapp2.RequestHandler):
-  def get(self, region_id):
-    return self.post(region_id)
 
-  def post(self, region_id):
-    trails = ReadTrailsFromFile()
-    self.response.out.write(json.dumps(ResponseFromTrails(trails)))
+class TrailsByAreaPage(JSONPHandler):
+  def get_json(self, area_id):
+    uri = 'http://bouldermountainbike.org/trailsAPI/areas/%s/trails' % region_id
+    cached = memcache.get(uri)
+    if cached: return cached
 
-class TrailsPage(webapp2.RequestHandler):
-  def post(self, trail_id):
-    self.response.out.write(json.dumps(SAMPLE_TRAIL_1))
+    result = urlfetch.fetch(url=url, method=urlfetch.GET)
+    if result.status_code == 200:
+      json_str = ExtractGxpAndInsertPoints(result.content)
+      memcache.add(uri, json_str)
+    else:
+      return None
 
-class AreasByRegionPage(webapp2.RequestHandler):
-  def get(self, region_id):
-    return self.post(region_id)
+def ExtractGxpAndInsertPoints(trails_json):
+  trails = json.loads(trails_json)['response']['trails']
+  for trail in trails:
+    if type(trail['files'] == dict):
+      files_by_extension = {}
+      for file in trail['files']:
+        filepath = trail['files'][file]['filepath']
+        files_by_extension[filepath.split('.')[-1]] = filepath
 
-  def post(self, region_id):
-    areas = ReadAreasFromFile()
-    self.response.out.write(json.dumps(ResponseFromAreas(areas)))
+      if 'gpx' in files_by_extension:
+        trail['points'] = buildpoints.BuildPoints().fromGpx(files_by_extension['gpx'])
+      elif 'kml' in files_by_extension:
+        trail['points'] = buildpoints.BuildPoints().fromKml(files_by_extension['kml'])
+
+  return json.dumps(trails)
+
+
+class TrailsByRegionPage(JSONPHandler):
+  def get_json(self, region_id):
+    uri = 'http://bouldermountainbike.org/trailsAPI/regions/%s/trails' % region_id
+    cached = memcache.get(uri)
+    if cached:
+      content = cached
+    else:
+      result = urlfetch.fetch(url=uri, method=urlfetch.GET)
+      if result.status_code == 200:
+        content = result.content
+        memcache.add(uri, content)
+      else:
+        return None
+
+    json_str = ExtractGxpAndInsertPoints(content)
+    return json_str
+
+class TrailsPage(JSONPHandler):
+  def get_json(self, trail_id):
+    return SAMPLE_TRAIL_1
+
+class AreasByRegionPage(JSONPHandler):
+  def get_json(self, id):
+    uri = '%s/trailsAPI/regions/%s/areas' % (BMA_DOMAIN, id)
+    cached = memcache.get(uri)
+    if cached: return cached
+
+    result = urlfetch.fetch(url=uri, method=urlfetch.GET)
+    if result.status_code == 200:
+      memcache.add(uri, result.content)
+      return result.content
+    else:
+      return None
+
 
 app = webapp2.WSGIApplication([('/v1/trails/([^/]+)$', TrailsPage),
                                ('/v1/area/([^/]+)/trails$', TrailsByAreaPage),
                                ('/v1/regions$', RegionsPage),
                                ('/v1/regions/([^/]+)/areas$', AreasByRegionPage),
                                ('/v1/regions/([^/]+)/trails$', TrailsByRegionPage)], debug=True)
+

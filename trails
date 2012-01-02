@@ -25,24 +25,6 @@
         "lat": 0, 
         "lon": 0
       }, 
-      "id": 2, 
-      "keywords": "lorem ipsum", 
-      "kmlurl": "/static/bl.kml",
-      "name": "Betasso Preserve", 
-      "owner": "Lorem ipsum", 
-      "regionId": 1, 
-      "updatedAt": 0, 
-      "url": "http://bouldermountainbike.org/trail/benjamin-trail"
-    }
-  }, 
-  {
-    "trail": {
-      "areaId": 1, 
-      "description": "Lorem ipsum", 
-      "head": {
-        "lat": 0, 
-        "lon": 0
-      }, 
       "id": 3, 
       "keywords": "lorem ipsum", 
       "kmlurl": "http://bouldermountainbike.org/sites/default/files/Link%20Trail.kmz", 

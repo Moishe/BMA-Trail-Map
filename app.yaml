@@ -11,6 +11,9 @@ handlers:
 - url: /v1/.*
   script: mockapi.app
 
+- url: /points
+  script: kmltopoints.app
+
 - url: /
   script: mappage.app
 
