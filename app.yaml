@@ -1,5 +1,5 @@
 application: bma-trails
-version: 1
+version: test
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -10,9 +10,6 @@ handlers:
 
 - url: /v1/.*
   script: mockapi.app
-
-- url: /points
-  script: kmltopoints.app
 
 - url: /
   script: mappage.app
