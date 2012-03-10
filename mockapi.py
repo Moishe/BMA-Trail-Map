@@ -22,7 +22,7 @@ class JSONPHandler(webapp2.RequestHandler):
     return self.post(id)
 
   def post(self, id):
-    json_str = self.get_json(id)
+    json_str = self.get_json(id, self.request.get('skip_cache', 'n') == 'y')
     jsonp = self.request.get('jsonp')
     if jsonp:
       self.response.headers['Content-Type'] = 'application/javascript'
@@ -46,19 +46,9 @@ class TrailPoints(db.Model):
   points = db.TextProperty()
 
 
-def GetPointsForTrail(trail):
-  # First, see if there's an entry in memcache for this trail
-  logging.info('Looking up %s in memcache' % trail['id'])
-  cached_trail = memcache.get(trail['id'])
-  if cached_trail:
-    (timestamp, points) = cached_trail
-  else:
-    timestamp = None
-    points = None
-
+def GetPointsForTrail(trail, skip_cache, timestamp=None, points=None):
   # Next, see if there's something more recent than what we got from memcache.
   if type(trail['files'] == dict):
-    files_by_extension = {}
     file_to_load = None
     file_timestamp = None
     for file_id in trail['files']:
@@ -69,45 +59,61 @@ def GetPointsForTrail(trail):
         file_to_load = file['filepath']
 
     if timestamp and points and file_timestamp <= timestamp:
-      logging.info('Returning points from memcache.')
-      return points
+      return (points, None)
 
     if file_to_load:
       # Before we do an urlfetch, see if this trail is in our datastore.
-      trail_points = TrailPoints.get_by_key_name(trail['id'])
-      if trail_points:
-        logging.info('Found trail_points, %d, %d' % (trail_points.timestamp, file_timestamp))
-      else:
-        logging.info('Couldn\'t find trail_points %s' % (trail['id']))
-
-      if trail_points and trail_points.timestamp >= file_timestamp:
-        logging.info('Found %s in datastore' % trail['id'])
-        points = json.loads(trail_points.points)
-        memcache.add(trail['id'], [trail_points.timestamp, points])
-        return points
+      if not skip_cache:
+        trail_points = TrailPoints.get_by_key_name(trail['id'])
+        if trail_points and trail_points.timestamp >= file_timestamp:
+          points = json.loads(trail_points.points)
+          memcache.add(trail['id'], [trail_points.timestamp, points])
+          return (points, None)
       
       uri = 'http://xmltopoints.appspot.com/getpoints?uri=' + MakeFileUri(file_to_load)
-      result = urlfetch.fetch(url=uri)
+      rpc = urlfetch.create_rpc()
+      urlfetch.make_fetch_call(rpc, uri)
+      return (None, rpc, file_timestamp)
       
       if result and result.status_code == 200:
-        points = json.loads(result.content)
-        memcache.add(trail['id'], [file_timestamp, points])
-
-        trail_points = TrailPoints(timestamp=file_timestamp,points=result.content,key_name=trail['id'])
-        logging.info('Adding (%d,%s) to datastore' % (file_timestamp, trail['id']))
-        trail_points.put()
-        return points
+        return (points, None)
   else:
-    logging.info('Returning points from memcache.')
-    return points
+    return (points, None)
 
   return None
 
 
-def ExtractGxpAndInsertPoints(trails_json):
+def ExtractGxpAndInsertPoints(trails_json, skip_cache):
   trails = json.loads(trails_json)['response']['trails']
+  cache_get = []
   for trail in trails:
-    trail['points'] = GetPointsForTrail(trail)
+    cache_get.append(trail['id'])
+
+  trail_points = memcache.get_multi(cache_get)
+
+  for trail in trails:
+    if trail['id'] in trail_points:
+      (timestamp, points) = trail_points[trail['id']]
+      trail['points'] = GetPointsForTrail(trail, skip_cache, timestamp, points)
+    else:
+      trail['points'] = GetPointsForTrail(trail, skip_cache)
+
+  for trail in trails:
+    if not trail['points']:
+      continue
+
+    if trail['points'][1]:
+      result = trail['points'][1].get_result()
+      file_timestamp = trail['points'][2]
+      if result.status_code == 200:
+        points = json.loads(result.content)
+        memcache.add(trail['id'], [file_timestamp, points])
+
+        trail_points = TrailPoints(timestamp=file_timestamp,points=result.content,key_name=trail['id'])
+        trail_points.put()
+        trail['points'] = points
+    else:
+      trail['points'] = trail['points'][0]
 
   return json.dumps(trails)
 
@@ -122,9 +128,12 @@ class TrailsByRegionPage(JSONPHandler):
                                ''))
     return uri
 
-  def get_json(self, region_id):
+  def get_json(self, region_id, skip_cache):
     uri = self.get_query_uri(region_id)
-    cached = memcache.get(uri)
+    if skip_cache:
+      cached = None
+    else:
+      cached = memcache.get(uri)
     if cached:
       content = cached
     else:
@@ -136,7 +145,7 @@ class TrailsByRegionPage(JSONPHandler):
       else:
         return None
 
-    json_str = ExtractGxpAndInsertPoints(content)
+    json_str = ExtractGxpAndInsertPoints(content, skip_cache)
     return json_str
 
 
@@ -150,19 +159,19 @@ class TrailsByAreaPage(JSONPHandler):
                                ''))
     return uri
 
-  def get_json(self, area_id):
+  def get_json(self, area_id, skip_cache):
     uri = self.get_query_uri(area_id)
     logging.warning('Getting %s' % uri)
     result = urlfetch.fetch(url=uri, method=urlfetch.GET)
     if result.status_code == 200:
       content = result.content
 
-    json_str = ExtractGxpAndInsertPoints(content)
+    json_str = ExtractGxpAndInsertPoints(content, skip_cache)
     return json_str
 
 
 class ConditionsByRegionPage(JSONPHandler):
-  def get_json(self, region_id):
+  def get_json(self, region_id, skip_cache):
     uri = urlparse.urlunparse((BMA_SCHEME,
                                BMA_DOMAIN,
                                urllib.quote('/trailsAPI/regions/%s/conditions' % region_id),

@@ -4,6 +4,7 @@ import mockapi
 
 import logging
 import os
+import random
 import webapp2
 
 from google.appengine.api import memcache
@@ -15,19 +16,20 @@ class MapPage(webapp2.RequestHandler):
   def get(self):
     region_id = self.request.get('r', '1')
     area_id = self.request.get('a')
-    # If we have them cached, send the trails down in the payload.
-    if not area_id:
-      uri = mockapi.TrailsByRegionPage().get_query_uri(region_id)
+    skip_cache = self.request.get('skip_cache', 'n') == 'y'
+    logging.info("MapPage: %s" % str(skip_cache))
+    if skip_cache:
+      logging.info('Flushing memcache.')
+      memcache.flush_all()
+
+    if skip_cache:
+      cache_buster = '?cache_buster=' + str(random.randint(0, 4096))
     else:
-      uri = mockapi.TrailsByAreaPage().get_query_uri(area_id)
-    cached = memcache.get(uri)
-    if cached:
-      cached_with_points = mockapi.ExtractGxpAndInsertPoints(cached)
-    else:
-      cached_with_points = None
+      cache_buster = ''
 
     path = os.path.join(os.path.dirname(__file__), 'map.html')
-    self.response.out.write(template.render(path, {'cached_trails': cached_with_points,
-                                                   'area': area_id}))
+    self.response.out.write(template.render(path, {'area': area_id,
+                                                   'skip_cache': self.request.get('skip_cache', 'n'),
+                                                   'cache_buster': cache_buster}))
 
 app = webapp2.WSGIApplication([('/', MapPage)], debug=True)

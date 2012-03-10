@@ -6,7 +6,6 @@ var trails = {};
 
 function trailDataReceived(trailResponse) {
   var infoWindow = new google.maps.InfoWindow();
-
   var bounds = new google.maps.LatLngBounds();
   var boundsByArea = {};
   for (i = 0; i < trailResponse.length; i++) {
@@ -53,7 +52,7 @@ function trailDataReceived(trailResponse) {
       }
     }
   }
-
+  /*
   for (var area in boundsByArea) {
     var areaBounds = boundsByArea[area];
     var rect = new google.maps.Rectangle({
@@ -67,8 +66,9 @@ function trailDataReceived(trailResponse) {
     rect.setMap(map);
     addClickListener(rect, areaBounds);
   }
+  */
 
-  //  map.fitBounds(bounds);
+  map.fitBounds(bounds);
 }
 
 function addClickListener(rect, areaBounds) {
@@ -76,6 +76,7 @@ function addClickListener(rect, areaBounds) {
                                 'click',
                                 function(event) {
                                   map.fitBounds(areaBounds);
+				  return true;
                                 });
 }
 
@@ -132,7 +133,7 @@ function addInfoWindowHandlers(infoWindow, map, poly, color, trail) {
                                 });
 }
 
-function initializeMap(areaId) {
+function initializeMap(areaId, skip_cache) {
   var latlng = new google.maps.LatLng(40.0, -105.26);
   var myOptions = {
     zoom: 11,
@@ -149,7 +150,7 @@ function initializeMap(areaId) {
     trailDataReceived(JSON.parse(trailData));
   } else {
     // TODO (moishel): add a spinner or something to indicate trail data's loading.
-    $.ajax({url: '/v1/regions/1/trails?jsonp=trailDataReceived'});
+    $.ajax({url: '/v1/regions/1/trails?jsonp=trailDataReceived&skip_cache=' + skip_cache});
   }
 
   $.ajax({url: '/v1/regions/1/conditions?jsonp=trailConditionsReceived'});
