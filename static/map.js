@@ -82,8 +82,8 @@ function addClickListener(rect, areaBounds) {
 
 function trailConditionsReceived(conditions) {
   var i;
-  for (i = 0; i < conditions.response.trails.length; i++) {
-    trails[conditions.response.trails[i].trailId].conditionDetails = conditions.response.trails[i];
+  for (i = 0; i < conditions.response.conditions.length; i++) {
+    trails[conditions.response.conditions[i].trailId].conditionDetails = conditions.response.conditions[i];
   }
 }
 
@@ -108,10 +108,7 @@ function showInfoWindow(infoWindow, trail, poly, latLng) {
   $('<div>' + trail.length + ' miles</div>').appendTo(stats);
   $('<h1>Elevation Gain:</h1>').appendTo(stats);
   $('<div>' + trail.elevationGain + ' ft.</div>').appendTo(stats);
-  
     
-  header.click(function() {window.open(trail.url)});
-  
   infoWindow.setContent(div.get()[0]);
 
   infoWindow.setPosition(latLng);
