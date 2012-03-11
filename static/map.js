@@ -3,6 +3,7 @@ var selectedPolys = [];
 var map;
 var areas;
 var trails = {};
+var conditions = {};
 
 function trailDataReceived(trailResponse) {
   var infoWindow = new google.maps.InfoWindow();
@@ -43,7 +44,7 @@ function trailDataReceived(trailResponse) {
       });
 
       addInfoWindowHandlers(infoWindow, map, poly, color, trail);
-      poly.setMap(map)
+      poly.setMap(map);
       
       if (polyByArea[trail.area]) {
         polyByArea[trail.area].push(poly);
@@ -80,19 +81,33 @@ function addClickListener(rect, areaBounds) {
                                 });
 }
 
-function trailConditionsReceived(conditions) {
+function trailConditionsReceived(receivedConditions) {
   var i;
-  for (i = 0; i < conditions.response.conditions.length; i++) {
-    trails[conditions.response.conditions[i].trailId].conditionDetails = conditions.response.conditions[i];
+  for (i = 0; i < receivedConditions.response.conditions.length; i++) {
+    condition = receivedConditions.response.conditions[i];
+    trailId = condition.trailId;
+    if (!conditions[trailId] ||
+	(parseInt(conditions[trailId].updatedAt) <
+	 parseInt(condition.updatedAt))) {
+      conditions[trailId] = condition;
+    }
   }
 }
 
 function showInfoWindow(infoWindow, trail, poly, latLng) {  
-  if (trail.conditionDetails && trail.conditionDetails.comment) {
-    description = trail.conditionDetails.comment;
-  } else {
-    description = trail.description;
+  var description = '';
+  if (conditions[trail.id]) {
+    condition = conditions[trail.id];
+    var date = new Date(parseInt(condition.updatedAt) * 1000);
+    var today = new Date();
+    var diff = today.getTime() - date.getTime();
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    description = condition.nickname + " updated " + days + " days ago<br/>";
+    description += "<b>" + condition.comment + "</b><p/>";
   }
+  description += trail.description;
+
+  
   if (description.length > 256) {
     description = description.substring(0, 256);
     description += '...';
@@ -147,7 +162,13 @@ function initializeMap(areaId, skip_cache) {
     trailDataReceived(JSON.parse(trailData));
   } else {
     // TODO (moishel): add a spinner or something to indicate trail data's loading.
-    $.ajax({url: '/v1/regions/1/trails?jsonp=trailDataReceived&skip_cache=' + skip_cache});
+    var url;
+    if (areaId) {
+      url = '/v1/areas/' + areaId + '/trails?jsonp=trailDataReceived&skip_cache=' + skip_cache;
+    } else {
+      url = '/v1/regions/1/trails?jsonp=trailDataReceived&skip_cache=' + skip_cache;
+    }
+    $.ajax({url: url});
   }
 
   $.ajax({url: '/v1/regions/1/conditions?jsonp=trailConditionsReceived'});
