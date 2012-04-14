@@ -4,9 +4,13 @@ var map;
 var areas;
 var trails = {};
 var conditions = {};
+var infoWindow = new google.maps.InfoWindow();
+var prevPoly;
+var prevColor;
+var trail_canvas_buffer = 0;
 
 function trailDataReceived(trailResponse) {
-  var infoWindow = new google.maps.InfoWindow();
+  try {
   var bounds = new google.maps.LatLngBounds();
   var boundsByArea = {};
   for (i = 0; i < trailResponse.length; i++) {
@@ -17,35 +21,16 @@ function trailDataReceived(trailResponse) {
       }
 
       trails[trail.id] = trail;
-      var points = [];
-      for (var j = 0; j < trail.points.length; j++) {
-        var p = new google.maps.LatLng(trail.points[j][0],
-                                       trail.points[j][1]);
-        points.push(p);
-        bounds.extend(p);
-        boundsByArea[trail.area].extend(p);
-      }
 
-      if (trail.condition == '1') {
-        color = '#FF0000';
-      } else if (trail.condition == '2') {
-        color = '#FFA500';
-      } else if (trail.condition == '3') {
-        color = '#00FF00';
-      } else {
-        color = '#888888';
-      }
-
-      var poly = new google.maps.Polyline({
-        path: points,
-        strokeColor: color,
-        strokeOpacity: 0.7,
-        strokeWeight: 4
-      });
-
-      addInfoWindowHandlers(infoWindow, map, poly, color, trail);
+      var poly = drawTrailPoints(trail,
+                                 {
+                                   strokeColor: '#000000',
+                                   strokeOpacity: 1,
+                                   strokeWeight: 0.5,
+                                   zIndex: 99
+                                 }, bounds);
       poly.setMap(map);
-      
+
       if (polyByArea[trail.area]) {
         polyByArea[trail.area].push(poly);
       } else {
@@ -70,6 +55,10 @@ function trailDataReceived(trailResponse) {
   */
 
   map.fitBounds(bounds);
+  } catch (e) {
+    console.log(e.message);
+  }
+  $.ajax({url: '/v1/regions/1/conditions?jsonp=trailConditionsReceived'});
 }
 
 function addClickListener(rect, areaBounds) {
@@ -77,24 +66,142 @@ function addClickListener(rect, areaBounds) {
                                 'click',
                                 function(event) {
                                   map.fitBounds(areaBounds);
-				  return true;
+				                          return true;
                                 });
 }
 
-function trailConditionsReceived(receivedConditions) {
-  var i;
-  for (i = 0; i < receivedConditions.response.conditions.length; i++) {
-    condition = receivedConditions.response.conditions[i];
-    trailId = condition.trailId;
-    if (!conditions[trailId] ||
-	(parseInt(conditions[trailId].updatedAt) <
-	 parseInt(condition.updatedAt))) {
-      conditions[trailId] = condition;
+function drawTrailPoints(trail, options, optBounds) {
+  var points = [];
+  for (var j = 0; j < trail.points.length; j++) {
+    var p = new google.maps.LatLng(trail.points[j][0],
+                                   trail.points[j][1]);
+    points.push(p);
+    if (optBounds) {
+      optBounds.extend(p);
     }
+  }
+
+  options.path = points;
+  var poly = new google.maps.Polyline(options);
+
+  poly.setMap(map);
+
+  return poly;
+}
+
+function trailConditionsReceived(receivedConditions) {
+  try{
+    var i;
+    for (i = 0; i < receivedConditions.response.conditions.length; i++) {
+      condition = receivedConditions.response.conditions[i];
+      trailId = condition.trailId;
+      if (!conditions[trailId] ||
+	        (parseInt(conditions[trailId].updatedAt) <
+	         parseInt(condition.updatedAt))) {
+        conditions[trailId] = condition;
+
+        var trail = trails[trailId];
+        if (trail) {
+          var date = new Date(parseInt(condition.updatedAt) * 1000);
+          var today = new Date();
+          var diff = today.getTime() - date.getTime();
+          var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+          if (trail.condition == '1') {
+            color = '#FF0000';
+          } else if (trail.condition == '2') {
+            color = '#FFA500';
+          } else if (trail.condition == '3') {
+            color = '#00FF00';
+          } else {
+            color = '#888888';
+          }
+
+          poly = drawTrailPoints(trail,
+                          {
+                            strokeColor: color,
+                            strokeOpacity: 0.5,
+                            strokeWeight: 5,
+                            zIndex: 10
+                          });
+
+          if (days < 7) {
+            animatePoly = drawTrailPoints(trail,
+                                          {strokeColor: '#FFFF00',
+                                           zIndex: 5,
+                                           opacity: 1.0,
+                                           strokeWeight: 0});
+            animatePolyInfo(animatePoly, color, 0);
+          }
+          addInfoWindowHandlers(infoWindow, map, poly, color, trail);
+        }
+      }
+    }
+    setTimeout(function() {
+      setTimeout(animatePolyStep, 10);
+    }, 1000);
+  } catch (e) {
+    console.log(e.message);
   }
 }
 
-function showInfoWindow(infoWindow, trail, poly, latLng) {  
+var polysToAnimate = [];
+function animatePolyInfo(poly, color, opacity) {
+  polysToAnimate.push({poly: poly,
+                       goalColor: color,
+                       goalOpacity: opacity,
+                       step: 0,
+                       currentColor: color,
+                       currentOpacity: 0});
+}
+
+function RGBtoHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
+function toHex(N) {
+  if (N==null) return "00";
+  N=parseInt(N); if (N==0 || isNaN(N)) return "00";
+  N=Math.max(0,N); N=Math.min(N,255); N=Math.round(N);
+  return "0123456789ABCDEF".charAt((N-N%16)/16)
+    + "0123456789ABCDEF".charAt(N%16);
+}
+
+function animatePolyStep() {
+  if (polysToAnimate.length > 0) {
+    var newPolysToAnimate = [];
+    for (var i = 0; i < polysToAnimate.length; i++) {
+      animateInfo = polysToAnimate[i];
+      var opacity;
+      var color;
+      var steps = 20.0;
+      if (animateInfo.step < (steps * 2)) {
+        var virtualStep = animateInfo.step;
+        if (animateInfo.step > steps / 2) {
+          virtualStep = steps / 2 - (animateInfo.step - (steps / 2))
+        }
+        color = '#FFFF00'
+        opacity = 1.0 - ((virtualStep / steps) * 1.0);
+        animateInfo.step += 1;
+        weight = (virtualStep / steps) * 30;
+        newPolysToAnimate.push(animateInfo);
+      } else {
+        color = '#FFFF00'
+        opacity = 0.5
+        weight = 5;
+      }
+      animateInfo.poly.setOptions({
+        strokeOpacity: opacity,
+        strokeWeight: weight
+      });
+    }
+    polysToAnimate = newPolysToAnimate;
+    setTimeout(animatePolyStep, 10);
+  }
+}
+
+function showInfoWindow(infoWindow, trail, poly, latLng, color) {
+  if (prevPoly == poly) {
+    return;
+  }
+
   var description = '';
   if (conditions[trail.id]) {
     condition = conditions[trail.id];
@@ -104,31 +211,47 @@ function showInfoWindow(infoWindow, trail, poly, latLng) {
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
     description = condition.nickname + " updated " + days + " days ago<br/>";
     description += "<b>" + condition.comment + "</b><p/>";
+  } else {
+    description = trail.description;
   }
-  description += trail.description;
-
   
   if (description.length > 256) {
     description = description.substring(0, 256);
     description += '...';
   }
-  var div = $('<div/>', {class: 'infobox'});
-  var desc = $('<div class="trail-desc"/></div>').appendTo(div);
-  var header = $('<h1><a href="#">' + trail.name + '</a></h1>').appendTo(desc);
+  var div = $('<div id="infobox"/>', {class: 'infobox'});
+  var header = $('<h2><a href="#">' + trail.name + '</a></h1>').appendTo(div);
   header.click(function() {window.open(trail.url)});
-  $('<div>' + description + '</div>').appendTo(desc);
   var stats = $('<div class="trail-stats"><h1>Trail Ratings</h1></div>').appendTo(div);
   $('<div>T: ' + trail.techRating + ' A: ' + trail.aerobicRating + ' C: ' + trail.coolRating + '</div>').appendTo(stats);
   $('<h1>Trail Length:</h1>').appendTo(stats);
   $('<div>' + trail.length + ' miles</div>').appendTo(stats);
   $('<h1>Elevation Gain:</h1>').appendTo(stats);
   $('<div>' + trail.elevationGain + ' ft.</div>').appendTo(stats);
+  var desc = $('<div class="trail-desc"/></div>').appendTo(div);
+  $('<div>' + description + '</div>').appendTo(desc);
+
+  $('#trail_canvas-' + trail_canvas_buffer).slideUp();
+  trail_canvas_buffer = (trail_canvas_buffer + 1) % 2;
+  current_trail_canvas = '#trail_canvas-' + trail_canvas_buffer;
+  $(current_trail_canvas).empty();
+  div.appendTo($('#trail_canvas-' + trail_canvas_buffer));
+  $(current_trail_canvas).slideDown();
+  
+  poly.setOptions({strokeColor: '#FFFF00'});
+  if (prevPoly) {
+    prevPoly.setOptions({strokeColor: prevColor});
+  }
+  prevColor = color;
+  prevPoly = poly;
+
+/*
     
   infoWindow.setContent(div.get()[0]);
 
   infoWindow.setPosition(latLng);
-  poly.setOptions({strokeColor: '#FFFF00'});
   infoWindow.open(map);
+*/
 }
 
 function addInfoWindowHandlers(infoWindow, map, poly, color, trail) {
@@ -141,7 +264,7 @@ function addInfoWindowHandlers(infoWindow, map, poly, color, trail) {
   google.maps.event.addListener(poly,
                                 'click',
                                 function(event) {
-                                  showInfoWindow(infoWindow, trail, poly, event.latLng);
+                                  showInfoWindow(infoWindow, trail, poly, event.latLng, color);
                                 });
 }
 
@@ -170,7 +293,5 @@ function initializeMap(areaId, skip_cache) {
     }
     $.ajax({url: url});
   }
-
-  $.ajax({url: '/v1/regions/1/conditions?jsonp=trailConditionsReceived'});
 }
 
