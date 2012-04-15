@@ -19,6 +19,7 @@
 
     h2 {
       font-size: 10pt;
+      margin: 0px;
     }
 
     body {
@@ -28,6 +29,8 @@
 
     .infobox {
       width: 90%;
+      padding-left: 5px;
+      padding-right: 5px;
     }
 
     .trail-desc {
@@ -63,6 +66,11 @@
       width: 20%;
       height: 100%;
       float: left;
+    }
+
+    .border_canvas {
+      border-right: solid black 1px;
+      height: 100%;
     }
 
     #map_canvas { 
@@ -105,12 +113,16 @@
     </script>
     <div id="map_container">
       <div id="trail_canvas">
-        <div id="trail_canvas-0">
+        <div id="trail_canvas-0" class="border_canvas">
           <div class="centered infobox">
-            <p>Click on a trail to see its description.
+            <h1>Welcome to the BMA Trail Conditions Map!</h1>
+            <p>Click on a trail to see its description.</p>
+            <p>Please note that not all Boulder area trails are shown.
+              You can contribute your own KML or GPX files
+              <a href="mailto:trailinfo@bouldermountainbike.org">here</a>.</p>
           </div>
         </div>
-        <div id="trail_canvas-1" style="display:none">
+        <div id="trail_canvas-1" style="display:none" class="border_canvas">
         </div>
       </div>
       <div id="map_canvas"></div>

@@ -107,11 +107,11 @@ function trailConditionsReceived(receivedConditions) {
           var diff = today.getTime() - date.getTime();
           var days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-          if (trail.condition == '1') {
+          if (condition.conditionId == '1') {
             color = '#FF0000';
-          } else if (trail.condition == '2') {
+          } else if (condition.conditionId == '2') {
             color = '#FFA500';
-          } else if (trail.condition == '3') {
+          } else if (condition.conditionId == '3') {
             color = '#00FF00';
           } else {
             color = '#888888';
@@ -209,7 +209,13 @@ function showInfoWindow(infoWindow, trail, poly, latLng, color) {
     var today = new Date();
     var diff = today.getTime() - date.getTime();
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    description = condition.nickname + " updated " + days + " days ago<br/>";
+    var daysAgo;
+    if (days <= 0) {
+      daysAgo = "today";
+    } else {
+      days + " days ago";
+    }
+    description = condition.nickname + " updated " + daysAgo + "<br/>";
     description += "<b>" + condition.comment + "</b><p/>";
   } else {
     description = trail.description;
@@ -219,7 +225,8 @@ function showInfoWindow(infoWindow, trail, poly, latLng, color) {
     description = description.substring(0, 256);
     description += '...';
   }
-  var div = $('<div id="infobox"/>', {class: 'infobox'});
+  var div = $('<div id="infobox"/>');
+  div.addClass('infobox');
   var header = $('<h2><a href="#">' + trail.name + '</a></h1>').appendTo(div);
   header.click(function() {window.open(trail.url)});
   var stats = $('<div class="trail-stats"><h1>Trail Ratings</h1></div>').appendTo(div);
@@ -231,12 +238,12 @@ function showInfoWindow(infoWindow, trail, poly, latLng, color) {
   var desc = $('<div class="trail-desc"/></div>').appendTo(div);
   $('<div>' + description + '</div>').appendTo(desc);
 
-  $('#trail_canvas-' + trail_canvas_buffer).slideUp();
+  $('#trail_canvas-' + trail_canvas_buffer).hide();
   trail_canvas_buffer = (trail_canvas_buffer + 1) % 2;
   current_trail_canvas = '#trail_canvas-' + trail_canvas_buffer;
   $(current_trail_canvas).empty();
   div.appendTo($('#trail_canvas-' + trail_canvas_buffer));
-  $(current_trail_canvas).slideDown();
+  $(current_trail_canvas).show();
   
   poly.setOptions({strokeColor: '#FFFF00'});
   if (prevPoly) {
