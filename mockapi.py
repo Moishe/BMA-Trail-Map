@@ -55,7 +55,7 @@ def GetPointsForTrail(trail, skip_cache, timestamp=None, points=None):
       file = trail['files'][file_id]
       file_timestamp = int(file['timestamp'])
       file_extension = file['filepath'].split('.')[-1]
-      if file_timestamp > timestamp and file_extension in ['gpx','kml']:
+      if file_timestamp > timestamp and file_extension in ['gpx','kml', 'kmz']:
         file_to_load = file['filepath']
 
     if timestamp and points and file_timestamp <= timestamp:
@@ -70,9 +70,10 @@ def GetPointsForTrail(trail, skip_cache, timestamp=None, points=None):
           memcache.add(trail['id'], [trail_points.timestamp, points])
           return (points, None)
       
-      uri = 'http://xmltopoints.appspot.com/getpoints?uri=' + MakeFileUri(file_to_load)
+      uri = 'http://4.xmltopoints.appspot.com/getpoints?uri=' + MakeFileUri(file_to_load)
       rpc = urlfetch.create_rpc()
       urlfetch.make_fetch_call(rpc, uri)
+      logging.warning('Retrieving: ' + uri)
       return (None, rpc, file_timestamp)
       
       if result and result.status_code == 200:

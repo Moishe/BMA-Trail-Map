@@ -25,11 +25,19 @@ class MapPage(webapp2.RequestHandler):
     if skip_cache:
       cache_buster = '?cache_buster=' + str(random.randint(0, 4096))
     else:
-      cache_buster = ''
+      cache_buster = '?v=' + os.environ['CURRENT_VERSION_ID']
+
+    if 'help_already_shown' not in self.request.cookies:
+      self.response.headers.add_header('Set-Cookie', 'help_already_shown=1')
+      show_help = True
+    else:
+      show_help = False
+
 
     path = os.path.join(os.path.dirname(__file__), 'map.html')
     self.response.out.write(template.render(path, {'area': area_id,
                                                    'skip_cache': self.request.get('skip_cache', 'n'),
-                                                   'cache_buster': cache_buster}))
+                                                   'cache_buster': cache_buster,
+                                                   'show_help': show_help}))
 
 app = webapp2.WSGIApplication([('/', MapPage)], debug=True)

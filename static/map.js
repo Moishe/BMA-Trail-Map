@@ -4,7 +4,6 @@ var map;
 var areas;
 var trails = {};
 var conditions = {};
-var infoWindow = new google.maps.InfoWindow();
 var prevPoly;
 var prevColor;
 var trail_canvas_buffer = 0;
@@ -133,7 +132,7 @@ function trailConditionsReceived(receivedConditions) {
                                            strokeWeight: 0});
             animatePolyInfo(animatePoly, color, 0);
           }
-          addInfoWindowHandlers(infoWindow, map, poly, color, trail);
+          addInfoWindowHandlers(map, poly, color, trail);
         }
       }
     }
@@ -197,7 +196,7 @@ function animatePolyStep() {
   }
 }
 
-function showInfoWindow(infoWindow, trail, poly, latLng, color) {
+function showInfoWindow(trail, poly, latLng, color) {
   if (prevPoly == poly) {
     return;
   }
@@ -213,7 +212,7 @@ function showInfoWindow(infoWindow, trail, poly, latLng, color) {
     if (days <= 0) {
       daysAgo = "today";
     } else {
-      days + " days ago";
+      daysAgo = days + " days ago";
     }
     description = condition.nickname + " updated " + daysAgo + "<br/>";
     description += "<b>" + condition.comment + "</b><p/>";
@@ -251,31 +250,17 @@ function showInfoWindow(infoWindow, trail, poly, latLng, color) {
   }
   prevColor = color;
   prevPoly = poly;
-
-/*
-    
-  infoWindow.setContent(div.get()[0]);
-
-  infoWindow.setPosition(latLng);
-  infoWindow.open(map);
-*/
 }
 
-function addInfoWindowHandlers(infoWindow, map, poly, color, trail) {
-  google.maps.event.addListener(infoWindow,
-                                'closeclick',
-                                function() {
-                                  poly.setOptions({strokeColor: color});
-                                });
-
+function addInfoWindowHandlers(map, poly, color, trail) {
   google.maps.event.addListener(poly,
                                 'click',
                                 function(event) {
-                                  showInfoWindow(infoWindow, trail, poly, event.latLng, color);
+                                  showInfoWindow(trail, poly, event.latLng, color);
                                 });
 }
 
-function initializeMap(areaId, skip_cache) {
+function initializeMap(areaId, skip_cache, show_help) {
   var latlng = new google.maps.LatLng(40.0, -105.26);
   var myOptions = {
     zoom: 11,
@@ -300,5 +285,21 @@ function initializeMap(areaId, skip_cache) {
     }
     $.ajax({url: url});
   }
+
+  $('#help-banner').animate({opacity: 0.9,
+                             top: '5%',
+                             left: '5%',
+                             width:'90%', 
+                             height: '90%'});
+  $('#help-banner').click(function() {
+    $('#help-banner').hide();
+  });
+
+  $(window).keypress(function(event) {
+    if (event.keyCode == 104 ||
+        event.keyCode == 72) {
+      $('#help-banner').show();
+    }
+  });
 }
 
