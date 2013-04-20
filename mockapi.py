@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import blacklist
 import copy
 import logging
 import os
@@ -58,7 +59,7 @@ def GetPointsForTrail(trail, skip_cache, timestamp=None, points=None):
       if file_timestamp > timestamp and file_extension in ['gpx','kml', 'kmz']:
         file_to_load = file['filepath']
 
-    if timestamp and points and file_timestamp <= timestamp:
+    if not skip_cache and timestamp and points and file_timestamp <= timestamp:
       return (points, None)
 
     if file_to_load:
@@ -83,7 +84,6 @@ def GetPointsForTrail(trail, skip_cache, timestamp=None, points=None):
 
   return None
 
-
 def ExtractGxpAndInsertPoints(trails_json, skip_cache):
   trails = json.loads(trails_json)['response']['trails']
   cache_get = []
@@ -91,6 +91,15 @@ def ExtractGxpAndInsertPoints(trails_json, skip_cache):
     cache_get.append(trail['id'])
 
   trail_points = memcache.get_multi(cache_get)
+
+  whitelist_trails = []
+
+  for trail in trails:
+    # skip blacklisted trails.
+    if not trail['id'] in blacklist.ids:
+      whitelist_trails.append(trail)
+
+  trails = whitelist_trails
 
   for trail in trails:
     if trail['id'] in trail_points:
@@ -127,6 +136,7 @@ class TrailsByRegionPage(JSONPHandler):
                                '',
                                '',
                                ''))
+    logging.error(uri)
     return uri
 
   def get_json(self, region_id, skip_cache):
